@@ -73,8 +73,6 @@ client.on("messageCreate", msg => {
     return;
   }
 
-  console.log(msg.content);
-  console.log(msg.author.id);
 
   TicketClaimss.findOne({ TicketIDs: msg.content }, async (err, data) => {
     if (err) throw err;

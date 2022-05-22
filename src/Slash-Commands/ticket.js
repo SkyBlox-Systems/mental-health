@@ -19,7 +19,7 @@ module.exports.data = new SlashCommandBuilder()
             .addChoice('urgent', 'urgent')
             .addChoice('normal', 'normal')
             .addChoice('advise', 'advise'))
-    .addStringOption(option => 
+    .addStringOption(option =>
         option.setName('email')
             .setDescription('We will require your email, just incase something happens')
             .setRequired(true));
@@ -33,7 +33,7 @@ module.exports.run = (client, interaction) => {
             const FoundData = new MessageEmbed()
                 .setTitle('Data found')
                 .setDescription('It seems like you already have a mental health ticket open. Please check your DMS.')
-            interaction.reply(data)
+            interaction.reply({ embeds: [FoundData] })
 
         } else {
             const listt = interaction.options.getString('category');
@@ -136,10 +136,94 @@ module.exports.run = (client, interaction) => {
                 })
             }
             if (listt === 'normal') {
-                interaction.reply('normal')
+                ClaimTicket.findOne({ id: user }, async (err1, data1) => {
+                    if (err1) throw err;
+                    if (data1) {
+                        await interaction.reply({ embeds: [foundData] })
+                    } else {
+
+                        newguild.channels.create(name).then(async (chan) => {
+                            chan.setTopic(`Normal Mental Health. Your ticket has been open as from: ${currentDateAndTime} UTC.`)
+                            chan.permissionOverwrites.create(newguild.roles.everyone, {
+                                SEND_MESSAGES: false,
+                                VIEW_CHANNEL: false
+                            })
+
+                            await interaction.reply({ embeds: [open] });
+                            await interaction.user.send({ embeds: [Warning] })
+                            setTimeout(() => {
+                                interaction.user.send({ embeds: [DmPerson] })
+                            }, 3000);
+                            await chan.send({ embeds: [thankyou] }).then((m) => {
+                                m.pin()
+                            })
+                            data1 = new ClaimTicket({
+                                id: interaction.user.id,
+                                TicketIDs: generator,
+                                ServerID: interaction.guildId,
+                                ChannelID: chan.id,
+                                Topic: 'Normal',
+                                Time: currentDateAndTime,
+                                Email: emails,
+                                AddedUser: Array,
+                                ClaimUserID: ""
+                            })
+                            data1.save()
+                            const TicketClainCommandSend = newguild.channels.cache.find(ch => ch.name.toLowerCase() == "ticket-claim" && ch.type == "GUILD_TEXT")
+                            const TicketSupportID = newguild.roles.cache.find(roles => roles.id === `977876462134788106`)
+                            TicketClainCommandSend.send(`${TicketSupportID} \n<@${interaction.user.id}> has open a normal mental health ticket! Please run /claim ticketid:${generator} to claim the ticket!`)
+
+
+
+                        })
+
+                    }
+                })
             }
             if (listt === 'advise') {
-                interaction.reply('advise')
+                ClaimTicket.findOne({ id: user }, async (err1, data1) => {
+                    if (err1) throw err;
+                    if (data1) {
+                        await interaction.reply({ embeds: [foundData] })
+                    } else {
+
+                        newguild.channels.create(name).then(async (chan) => {
+                            chan.setTopic(`Normal Mental Health. Your ticket has been open as from: ${currentDateAndTime} UTC.`)
+                            chan.permissionOverwrites.create(newguild.roles.everyone, {
+                                SEND_MESSAGES: false,
+                                VIEW_CHANNEL: false
+                            })
+
+                            await interaction.reply({ embeds: [open] });
+                            await interaction.user.send({ embeds: [Warning] })
+                            setTimeout(() => {
+                                interaction.user.send({ embeds: [DmPerson] })
+                            }, 3000);
+                            await chan.send({ embeds: [thankyou] }).then((m) => {
+                                m.pin()
+                            })
+                            data1 = new ClaimTicket({
+                                id: interaction.user.id,
+                                TicketIDs: generator,
+                                ServerID: interaction.guildId,
+                                ChannelID: chan.id,
+                                Topic: 'Advise',
+                                Time: currentDateAndTime,
+                                Email: emails,
+                                AddedUser: Array,
+                                ClaimUserID: ""
+                            })
+                            data1.save()
+                            const TicketClainCommandSend = newguild.channels.cache.find(ch => ch.name.toLowerCase() == "ticket-claim" && ch.type == "GUILD_TEXT")
+                            const TicketSupportID = newguild.roles.cache.find(roles => roles.id === `977876365040828446`)
+                            TicketClainCommandSend.send(`${TicketSupportID} \n<@${interaction.user.id}> has open a advise mental health ticket! Please run /claim ticketid:${generator} to claim the ticket! You are suggested to give advise about what their mental health is about.`)
+
+
+
+                        })
+
+                    }
+                })
             }
         }
     })
