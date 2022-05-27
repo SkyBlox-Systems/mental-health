@@ -194,6 +194,20 @@ module.exports.run = (client, interaction) => {
                                             }
                                         })
                                     }, 5000);
+
+                                    MainDatabase.findOneAndUpdate({ SupportServer: '977861250300121128' }, { OpenTickets: - 1 }, async (err4, data4) => {
+                                        if (err4) throw err;
+                                        if (data4) {
+                                            data4.save()
+                                        }
+                                    })
+
+                                    MainDatabase.findOneAndUpdate({ SupportServer: '977861250300121128' }, { ClosedTickets: +1 }, async (err5, data5)=> {
+                                        if (err5) throw err;
+                                        if (data5) {
+                                            data5.save()
+                                        }
+                                    })
                                 })
 
 

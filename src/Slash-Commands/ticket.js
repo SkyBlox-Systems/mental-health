@@ -3,6 +3,7 @@ const { Discord, Channel } = require('discord.js');
 const { MessageEmbed } = require('discord.js');
 var currentDateAndTime = new Date().toLocaleString('en-GB', { timeZone: 'UTC' });
 const ClaimTicket = require('../schemas/ticketclaim')
+const MainDatabase = require('../schemas/TicketData');
 
 
 
@@ -126,7 +127,20 @@ module.exports.run = (client, interaction) => {
                             data1.save()
                             const TicketClainCommandSend = newguild.channels.cache.find(ch => ch.name.toLowerCase() == "ticket-claim" && ch.type == "GUILD_TEXT")
                             const TicketSupportID = newguild.roles.cache.find(roles => roles.id === `977876493956964362`)
-                            TicketClainCommandSend.send(`${TicketSupportID} \n<@${interaction.user.id}> has open a urgent mental health ticket! Please run /claim ticketid:${generator} to claim the ticket!`)
+                            
+                            
+                            MainDatabase.findOneAndUpdate({ SupportServer: '977861250300121128' }, { OpenTickets: +1 }, async (err4, data4) => {
+                                if (err4) throw err;
+                                if (data4) {
+                                    data4.save()
+                                }
+                            })
+                            MainDatabase.findOneAndUpdate({ SupportServer:  '977861250300121128' }, { AmountTickets: +1 }, async (err5, data5) => {
+                                if (err5) throw err;
+                                if (data5) {
+                                    data5.save()
+                                }
+                            })
 
 
 
@@ -173,6 +187,19 @@ module.exports.run = (client, interaction) => {
                             const TicketSupportID = newguild.roles.cache.find(roles => roles.id === `977876462134788106`)
                             TicketClainCommandSend.send(`${TicketSupportID} \n<@${interaction.user.id}> has open a normal mental health ticket! Please run /claim ticketid:${generator} to claim the ticket!`)
 
+                            MainDatabase.findOneAndUpdate({ SupportServer: '977861250300121128' }, { OpenTickets: +1 }, async (err4, data4) => {
+                                if (err4) throw err;
+                                if (data4) {
+                                    data4.save()
+                                }
+                            })
+                            MainDatabase.findOneAndUpdate({ SupportServer:  '977861250300121128' }, { AmountTickets: +1 }, async (err5, data5) => {
+                                if (err5) throw err;
+                                if (data5) {
+                                    data5.save()
+                                }
+                            })
+
 
 
                         })
@@ -218,6 +245,18 @@ module.exports.run = (client, interaction) => {
                             const TicketSupportID = newguild.roles.cache.find(roles => roles.id === `977876365040828446`)
                             TicketClainCommandSend.send(`${TicketSupportID} \n<@${interaction.user.id}> has open a advise mental health ticket! Please run /claim ticketid:${generator} to claim the ticket! You are suggested to give advise about what their mental health is about.`)
 
+                            MainDatabase.findOneAndUpdate({ SupportServer: '977861250300121128' }, { OpenTickets: +1 }, async (err4, data4) => {
+                                if (err4) throw err;
+                                if (data4) {
+                                    data4.save()
+                                }
+                            })
+                            MainDatabase.findOneAndUpdate({ SupportServer:  '977861250300121128' }, { AmountTickets: +1 }, async (err5, data5) => {
+                                if (err5) throw err;
+                                if (data5) {
+                                    data5.save()
+                                }
+                            })
 
 
                         })

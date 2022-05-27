@@ -8,9 +8,8 @@ module.exports = class ReadyEvent extends BaseEvent {
   }
   async run(client) {
     const activities = [
-      // `${client.guilds.cache.size} servers!`,
-      // `${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} users!`,
-      // `Support for users`
+      `${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} users!`,
+      `Support for users`
     ];
 
     let i = 0;

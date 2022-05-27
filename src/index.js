@@ -30,8 +30,6 @@ const TicketClaimss = require('./schemas/ticketclaim');
 
 client.on('ready', () => {
   let commands = client.application.commands;
-
-  client.user.setPresence({ status: 'dnd', activity: { name: `Coming Soon...`, type: 'WATCHING' } });
 })
 
 
